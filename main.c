@@ -1,3 +1,4 @@
+#include <time.h>
 #include <ctype.h>
 #include <stdio.h>
 #include <assert.h>
@@ -192,6 +193,11 @@ int main(int argc, char **argv)
 
     Hash_Table table = {0};
 
+    clock_t start_time, end_time;
+    double time_spent;
+
+    start_time = clock();
+
     size_t count = 0;
     for (; content.count > 0; count++)
     {
@@ -223,6 +229,9 @@ int main(int argc, char **argv)
         content.count -= token.count;
     }
 
+    end_time = clock();
+    time_spent = (double)(end_time - start_time) / CLOCKS_PER_SEC;
+
     qsort(table.entries, table.count, sizeof(*table.entries), compare_entries_count);
 
     printf("\nTop 10 most common words in %s", filename);
@@ -232,6 +241,8 @@ int main(int argc, char **argv)
     }
 
     printf("\n");
+
+    printf("\nTime spent on the linear search: %f seconds\n", time_spent);
 
     return EXIT_SUCCESS;
 }
